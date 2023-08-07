@@ -15,7 +15,7 @@ model = CustomizedResNet50()
 model.to(DEVICE)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.AdamW(model.parameters(), 0.0001)
+optimizer = torch.optim.AdamW(model.parameters(), 0.000001)
 
 trainDataset = TrainDataset('../dataset/split/train_val/train.csv', transform=A.Compose([
     A.RandomRotate90(),
@@ -75,7 +75,7 @@ def val(m_DataLoader, m_Model):
 
 if __name__ == '__main__':
 
-    model.load_state_dict(torch.load("../result/pth/res50_accu_0.92904.pth"))
+    model.load_state_dict(torch.load("../result/accu_0.9360.pth"))
 
     for i in range(EPOCH):
         data_split()
