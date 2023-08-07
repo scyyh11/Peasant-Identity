@@ -45,7 +45,7 @@ def train(m_DataLoader, m_Model, m_Criterion, m_Optimizer):
 
         m_train_loss += loss.item()
 
-    return m_train_loss / len(m_DataLoader)
+    return m_train_loss / len(m_DataLoader.dataset)
 
 
 valDataset = TrainDataset('../dataset/split/train_val/val.csv', transform=A.Compose([
@@ -70,7 +70,7 @@ def val(m_DataLoader, m_Model):
             output = m_Model(img)
             accuracy += (output.max(dim=1).indices == target).sum().item()
 
-    return accuracy / len(m_DataLoader)
+    return accuracy / len(m_DataLoader.dataset)
 
 
 if __name__ == '__main__':
