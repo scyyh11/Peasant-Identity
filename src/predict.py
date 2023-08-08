@@ -18,7 +18,7 @@ DEVICE = torch.device('mps' if torch.backends.mps.is_available() else 'cuda' if 
 model = CustomizedResNet50()
 model.to(DEVICE)
 optimizer = optim.AdamW(model.parameters(), 0.001)
-model.load_state_dict(torch.load('../result/pth/res50_accu_0.92904.pth'))
+model.load_state_dict(torch.load('../result/accu_0.9415.pth'))
 model.eval()
 
 test_loader = DataLoader(TestDataset('../dataset/test.csv',

@@ -15,14 +15,15 @@ model = CustomizedResNet50()
 model.to(DEVICE)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.AdamW(model.parameters(), 0.000001)
+optimizer = torch.optim.AdamW(model.parameters(), 0.0000000001)
+# optimizer = torch.optim.SGD(model.parameters(), lr=0.00000001, momentum=0.9)
 
 trainDataset = TrainDataset('../dataset/split/train_val/train.csv', transform=A.Compose([
     A.RandomRotate90(),
     A.Resize(256, 256),
     A.RandomCrop(224, 224),
     A.HorizontalFlip(p=0.5),
-    # A.RandomContrast(p=0.5),
+    # A.GaussNoise(p=1),  # 添加高斯噪声
     A.RandomBrightnessContrast(p=0.5),
     A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 ]))
@@ -41,7 +42,7 @@ def train(m_DataLoader, m_Model, m_Criterion, m_Optimizer):
         m_Optimizer.step()
 
         if count % 100 == 0:
-            print('Train loss', loss.item())
+            print('Train loss: ', loss.item())
 
         m_train_loss += loss.item()
 
@@ -75,13 +76,14 @@ def val(m_DataLoader, m_Model):
 
 if __name__ == '__main__':
 
-    model.load_state_dict(torch.load("../result/accu_0.9360.pth"))
+    model.load_state_dict(torch.load("../result/accu_0.9415.pth"))
 
     for i in range(EPOCH):
         data_split()
 
         train_loss = train(m_Model=model, m_DataLoader=trainDataLoader, m_Optimizer=optimizer, m_Criterion=criterion)
         val_acc = val(m_Model=model, m_DataLoader=valDataLoader)
+        # scheduler.step()
         print("Epoch:{}\t\t\ttrain_loss:{}\t\t\tval_acc:{}".format(i, train_loss, val_acc))
 
         torch.save(model.state_dict(), "../result/accu_{:.4f}.pth".format(val_acc))

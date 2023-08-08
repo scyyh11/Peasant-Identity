@@ -1,6 +1,9 @@
+import torch
 from torch import nn
 from torchvision import models
 from torchsummary import summary
+
+from tools import mySummary
 
 
 class CustomizedResNet18(nn.Module):
@@ -39,6 +42,18 @@ class CustomizedResNet50(nn.Module):
         return self.resnet(x)
 
 
+class CustomizedDensenet121(nn.Module):
+    def __init__(self):
+        super(CustomizedDensenet121, self).__init__()
+        my_model = models.densenet121(weights=models.DenseNet121_Weights.IMAGENET1K_V1)
+        my_model.classifier = nn.Linear(1024, 25)
+        self.densenet = my_model
+
+    def forward(self, x):
+        return self.densenet(x)
+
+
 if __name__ == '__main__':
-    model = CustomizedResNet50()
-    summary(model, (3, 224, 224))
+    model = CustomizedDensenet121()
+    # model = CustomizedResNet50()
+    mySummary.summary(model, torch.rand(1, 3, 224, 224))
