@@ -5,7 +5,7 @@ import pandas as pd
 import torch
 import albumentations as A
 
-from src.CustomizedResnet import CustomizedResNet50
+from src.CustomizedModel import CustomizedResNet50
 from FarmerDataset import TestDataset
 from torch.utils.data import DataLoader
 from torch import optim

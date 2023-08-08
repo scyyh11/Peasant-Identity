@@ -3,7 +3,7 @@ import albumentations as A
 from torch import nn
 from torch.utils.data import DataLoader
 
-from src.CustomizedResnet import CustomizedResNet50
+from src.CustomizedModel import CustomizedResNet50
 from src.FarmerDataset import TrainDataset
 from tools.dataSplit import data_split
 
@@ -15,7 +15,7 @@ model = CustomizedResNet50()
 model.to(DEVICE)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.AdamW(model.parameters(), 0.0000000001)
+optimizer = torch.optim.AdamW(model.parameters(), 0.000000000001)
 # optimizer = torch.optim.SGD(model.parameters(), lr=0.00000001, momentum=0.9)
 
 trainDataset = TrainDataset('../dataset/split/train_val/train.csv', transform=A.Compose([
