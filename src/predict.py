@@ -23,8 +23,8 @@ model.eval()
 
 test_loader = DataLoader(TestDataset('../dataset/test.csv',
                                      transform=A.Compose([
-                                         A.Resize(256, 256),
-                                         A.RandomCrop(224, 224),
+                                         A.Resize(224, 224),
+                                         # A.RandomCrop(224, 224),
                                          A.HorizontalFlip(p=0.5),
                                          A.RandomBrightnessContrast(p=0.5),
                                          A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     prediction = None
 
-    for _ in range(1):
+    for _ in range(10):
         if prediction is None:
             prediction = predict(test_loader, model)
         else:
